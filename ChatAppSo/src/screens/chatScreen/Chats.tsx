@@ -1,4 +1,11 @@
-import {FlatList, Pressable, StyleSheet, Text, View} from 'react-native';
+import {
+  FlatList,
+  Pressable,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from 'react-native';
 import React, {useContext} from 'react';
 import * as Icon from 'react-native-feather';
 import {GlobalContext} from '../../context';
@@ -37,7 +44,13 @@ const Chats = () => {
         animationType="slide"
         visible={modalVisible}>
         <View style={styles.modelSubView}>
-          <Text>HELOO</Text>
+          <TextInput
+            autoCorrect={false}
+            placeholder="Enter your user name"
+            // style={styles.loginInput}
+            // onChangeText={value => setCurrentUserName(value)}
+            // value={currentUserName}
+          />
         </View>
       </ModalComponent>
       <View style={styles.bottomContainer}>
