@@ -3,43 +3,17 @@ import React, {useContext, useEffect} from 'react';
 import {GlobalContext} from '../../context';
 import {useNavigation} from '@react-navigation/native';
 
-const ChatComponents = ({item}) => {
+const MessageComponents = ({item}) => {
   const {message, setMessage} = useContext(GlobalContext);
 
-  const navigation = useNavigation();
-  useEffect(() => {
-    setMessage(item?.message?.[item?.message?.length - 1]);
-  }, []);
-
-  const handelNavigateTOMessage = ({}) => {
-    navigation.navigate('Messages', {
-      currentGroupName: item.currentGroupName,
-      currentGroupID: item.id,
-    });
-  };
   return (
-    <Pressable style={styles.chat} onPress={handelNavigateTOMessage}>
-      <View style={styles.circle}>
-        <Text>ICon</Text>
-      </View>
-
-      <View style={styles.rightContinuer}>
-        <View>
-          <Text style={styles.userName}>{item.item.currentGroupName}</Text>
-          <Text style={styles.message}>
-            {message?.text ? message.text : 'Tap to start messaging'}
-          </Text>
-        </View>
-      </View>
-
-      <View>
-        <Text style={styles.time}>{message?.time ? message?.time : 'Now'}</Text>
-      </View>
+    <Pressable style={styles.chat}>
+      <Text>MessageComponents</Text>
     </Pressable>
   );
 };
 
-export default ChatComponents;
+export default MessageComponents;
 
 const styles = StyleSheet.create({
   chat: {

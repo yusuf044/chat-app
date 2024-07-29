@@ -8,6 +8,10 @@ function GlobalState({children}) {
   const [allUsers, setAllUsers] = useState([]);
   const [allChatRooms, setAllChatRooms] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
+  const [currentGroupName, setCurrentGroupName] = useState('');
+  const [message, setMessage] = useState({});
+  const [allChatMessage, setAllChatMessage] = useState([]);
+  const [currentChatMessage, setCurrentChatMessage] = useState('');
   return (
     <GlobalContext.Provider
       value={{
@@ -23,6 +27,14 @@ function GlobalState({children}) {
         setAllChatRooms,
         modalVisible,
         setModalVisible,
+        currentGroupName,
+        setCurrentGroupName,
+        message,
+        setMessage,
+        allChatMessage,
+        setAllChatMessage,
+        currentChatMessage,
+        setCurrentChatMessage,
       }}>
       {children}
     </GlobalContext.Provider>

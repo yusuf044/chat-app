@@ -34,6 +34,7 @@ const Home = ({navigation}) => {
         if (index === -1) {
           Alert.alert('Please register first');
         } else {
+          Alert.alert('JJJJ');
           setCurrentUser(currentUserName);
         }
       } else {
@@ -54,7 +55,6 @@ const Home = ({navigation}) => {
   useEffect(() => {
     if (currentUserName.trim() !== ' ') navigation.navigate('Chats');
   }, [currentUser]);
-  console.log(allUsers);
 
   return (
     <View style={styles.container}>

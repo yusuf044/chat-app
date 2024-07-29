@@ -1,37 +1,81 @@
 import {
   FlatList,
+  Keyboard,
   Pressable,
   StyleSheet,
   Text,
   TextInput,
   View,
 } from 'react-native';
-import React, {useContext} from 'react';
+import React, {useContext, useEffect} from 'react';
 import * as Icon from 'react-native-feather';
 import {GlobalContext} from '../../context';
 import ChatComponents from '../../components/chatComponents/chatComponents';
 import ModalComponent from '../../components/modalComponent';
+import {socket} from '../../../utils';
+import {useNavigation} from '@react-navigation/native';
 
-const Chats = () => {
-  const {allChatRooms, setAllChatRooms, modalVisible, setModalVisible} =
-    useContext(GlobalContext);
+const Chats = ({}) => {
+  const {
+    allChatRooms,
+    setAllChatRooms,
+    modalVisible,
+    setModalVisible,
+    currentUser,
+    setCurrentUser,
+    currentGroupName,
+    setCurrentGroupName,
+    setShowLoginView,
+  } = useContext(GlobalContext);
+  const navigation = useNavigation();
+  const handleCreateNewRoom = () => {
+    console.log('create group na,e========', currentGroupName);
+    socket.emit('createNewGroup', currentGroupName);
+    setModalVisible(false);
+    setCurrentGroupName('');
+    Keyboard.dismiss();
+  };
+  useEffect(() => {
+    socket.emit('getAllGroups');
+    socket.on('groupList', groups => {
+      console.log(groups, ',,,,,,,,ooooo');
+      setAllChatRooms(groups);
+    });
+  }, [socket]);
+  const handelLogout = ({}) => {
+    setCurrentUser(''), setShowLoginView(false);
+  };
+  useEffect(() => {
+    if (currentUser.trim() === '') navigation.navigate('Home');
+  }, [currentUser]);
   return (
     <View style={styles.mainWrapper}>
       <View style={styles.topContainer}>
         <View style={styles.header}>
-          <Text style={styles.heading}>Welcome..</Text>
-          {/* <Pressable>
-            <Icon.LogOut width={18} height={18} />
-          </Pressable> */}
+          <Text style={styles.heading}>Welcome {currentUser}</Text>
+          <Pressable
+            style={{
+              backgroundColor: 'red',
+              borderWidth: 2,
+              padding: 10,
+              borderRadius: 50,
+            }}
+            onPress={handelLogout}>
+            <Text>Log Out</Text>
+          </Pressable>
         </View>
       </View>
 
       <View style={styles.listContainer}>
+        {console.log(
+          'allChatRooms && allChatRooms.length',
+          allChatRooms && allChatRooms.length,
+        )}
         {allChatRooms && allChatRooms.length > 0 ? (
           <FlatList
             data={allChatRooms}
             renderItem={item => <ChatComponents item={item} />}
-            keyExtractor={({item}) => item.id}
+            keyExtractor={item => item.id}
           />
         ) : null}
       </View>
@@ -46,11 +90,21 @@ const Chats = () => {
         <View style={styles.modelSubView}>
           <TextInput
             autoCorrect={false}
-            placeholder="Enter your user name"
-            // style={styles.loginInput}
-            // onChangeText={value => setCurrentUserName(value)}
-            // value={currentUserName}
+            placeholder="Enter Group Name"
+            style={styles.loginInput}
+            onChangeText={value => setCurrentGroupName(value)}
+            value={currentGroupName}
           />
+          <View style={styles.buttonWrapperModel}>
+            <Pressable onPress={handleCreateNewRoom} style={styles.buttonModel}>
+              <Text style={styles.buttonText}>ADD</Text>
+            </Pressable>
+            <Pressable
+              onPress={() => setModalVisible(false)}
+              style={styles.buttonModel}>
+              <Text style={styles.buttonText}>CANCEL</Text>
+            </Pressable>
+          </View>
         </View>
       </ModalComponent>
       <View style={styles.bottomContainer}>
@@ -107,4 +161,24 @@ const styles = StyleSheet.create({
   },
   modelView: {width: '90%', backgroundColor: '#fff'},
   modelSubView: {padding: 12, paddingBottom: 16},
+  loginInput: {borderRadius: 50, padding: 10, borderWidth: 0.5},
+  buttonModel: {
+    backgroundColor: '#703efe',
+    padding: 12,
+    marginVertical: 10,
+    width: '36%',
+    elevation: 3,
+    borderRadius: 50,
+  },
+  buttonWrapperModel: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginTop: 10,
+  },
+  buttonTextModel: {
+    textAlign: 'center',
+    color: '#FFF',
+    fontWeight: 'bold',
+    fontSize: 15,
+  },
 });
