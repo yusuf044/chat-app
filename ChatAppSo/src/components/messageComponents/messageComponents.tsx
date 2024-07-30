@@ -1,46 +1,100 @@
-import {Pressable, StyleSheet, Text, View} from 'react-native';
-import React, {useContext, useEffect} from 'react';
-import {GlobalContext} from '../../context';
-import {useNavigation} from '@react-navigation/native';
+// import {Pressable, StyleSheet, Text, View} from 'react-native';
+// import React, {useContext, useEffect} from 'react';
+// import {GlobalContext} from '../../context';
+// import {useNavigation} from '@react-navigation/native';
 
-const MessageComponents = ({item}) => {
-  const {message, setMessage} = useContext(GlobalContext);
+// const MessageComponents = ({currentUser, item}) => {
+//   // const {message, setMessage} = useContext(GlobalContext);
+//   console.log('item=========MessageComponents', item);
+
+//   const currentUserStatus = item.currentUser !== currentUser;
+//   return (
+//     <View style={currentUserStatus ? {} : {alignItems: 'flex-end'}}>
+//       <View style={styles.messageItemWrapper}>
+//         <View style={styles.messageInnnerItemWrapper}>
+//           <View
+//             style={
+//               currentUserStatus
+//                 ? styles.messageItem
+//                 : [styles.messageItem, {backgroundColor: '#703efe'}]
+//             }>
+//             <Text
+//               style={currentUserStatus ? {color: '#000'} : {color: '#e5c1fe'}}>
+//               {item.text + 'JJJJJ'}
+//             </Text>
+//           </View>
+//         </View>
+//         <Text style={styles.time}>{item.time + '10:20'}</Text>
+//       </View>
+//     </View>
+//   );
+// };
+
+// export default MessageComponents;
+
+// const styles = StyleSheet.create({
+//   messageItemWrapper: {maxWidth: '50%', marginBottom: 15},
+//   messageInnnerItemWrapper: {
+//     flexDirection: 'row',
+//     alignItems: 'center',
+//   },
+//   messageItem: {
+//     width: '100%',
+//     backgroundColor: '#FFF',
+//     padding: 20,
+//     borderRadius: 10,
+//     marginBottom: 2,
+//   },
+//   time: {marginLeft: 10},
+// });
+
+// new
+import {StyleSheet, Text, View} from 'react-native';
+
+export default function MessageComponents({currentUser, item}) {
+  const currentUserStatus = item.currentUser !== currentUser;
+
+  console.log(currentUserStatus, item);
 
   return (
-    <Pressable style={styles.chat}>
-      <Text>MessageComponents</Text>
-    </Pressable>
+    <View style={currentUserStatus ? {} : {alignItems: 'flex-end'}}>
+      <View style={styles.messageItemWrapper}>
+        <View style={styles.messageItemInnerWrapper}>
+          <View
+            style={
+              currentUserStatus
+                ? styles.messageItem
+                : [styles.messageItem, {backgroundColor: '#703efe'}]
+            }>
+            <Text
+              style={currentUserStatus ? {color: '#000'} : {color: '#e5c1fe'}}>
+              {item.text}
+            </Text>
+          </View>
+        </View>
+        <Text style={styles.messageTime}>{item.time}</Text>
+      </View>
+    </View>
   );
-};
-
-export default MessageComponents;
+}
 
 const styles = StyleSheet.create({
-  chat: {
+  messageItemWrapper: {
+    maxWidth: '50%',
+    marginBottom: 15,
+  },
+  messageItemInnerWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  messageItem: {
     width: '100%',
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderRadius: 5,
-    padding: 10,
-    height: 80,
-    marginBottom: 10,
-    backgroundColor: '#FFF',
+    backgroundColor: '#ffffff',
+    padding: 20,
+    borderRadius: 10,
+    marginBottom: 2,
   },
-  circle: {
-    width: 50,
-    borderRadius: 50,
-    height: 50,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderWidth: 2,
-    marginRight: 10,
+  messageTime: {
+    marginLeft: 10,
   },
-  rightContinuer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    flex: 1,
-  },
-  userName: {fontSize: 18, marginBottom: 5, fontWeight: 'bold', color: '#000'},
-  message: {fontSize: 14, opacity: 0.8},
-  time: {opacity: 0.6},
 });
